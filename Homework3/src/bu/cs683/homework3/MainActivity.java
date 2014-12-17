@@ -1,9 +1,15 @@
 package bu.cs683.homework3;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +17,23 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		final EditText nameText = (EditText) findViewById(R.id.newNameText);
+		final TextView oldNameText = (TextView) findViewById(R.id.oldNameText);
+		
+		SharedPreferences prefs = getSharedPreferences("myName", MODE_PRIVATE); 
+		oldNameText.setText(prefs.getString("name", "No Name Found"));
+		
+		
+		Button button = (Button) findViewById(R.id.okButton);
+		button.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				SharedPreferences.Editor editor = getSharedPreferences("myName", MODE_PRIVATE).edit();
+				 editor.putString("name", nameText.getText().toString());
+				 editor.commit();
+			}
+		});
 	}
 
 	@Override
